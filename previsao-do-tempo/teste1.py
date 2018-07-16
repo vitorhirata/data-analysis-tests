@@ -1,9 +1,10 @@
 from darksky import forecast
 from datetime import datetime as dt
+from secrets import API_KEY
 
 lat = -23.496111
 lon = -46.619722
-#key =
+key = API_KEY
 
 SP = key, lat, lon
 
