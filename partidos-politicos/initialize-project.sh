@@ -10,14 +10,14 @@ states=(ac al ap am ba ce df es go ma mt ms mg pa pb pr pe pi rj rn rs ro rr sc 
 baseurl="http://agencia.tse.jus.br/estatistica/sead/eleitorado/filiados/uf/filiados_"
 
 for st in "${states[@]}"; do
-	for pol in "${politicalparty[@]}"; do
-		url=${baseurl}${pol}_${st}.zip
-		if `validate_url $url > /dev/null`; then
-	 		wget $url -P zip/ 
-		else 
-			echo "${url} inexistent"
-		fi
-	done
+  for pol in "${politicalparty[@]}"; do
+	   url=${baseurl}${pol}_${st}.zip
+     if `validate_url $url > /dev/null`; then
+       wget $url -P zip/
+     else
+       echo "${url} inexistent"
+     fi
+   done
 done
 
 
@@ -26,6 +26,6 @@ files=($(ls zip/))
 extractbase="aplic/sead/lista_filiados/uf/"
 
 for file in "${files[@]}"; do
-	extract=${extractbase}${file/zip/csv}
-	unzip -j zip/${file} ${extract} -d "csv/"
+  extract=${extractbase}${file/zip/csv}
+  unzip -j zip/${file} ${extract} -d "csv/"
 done
