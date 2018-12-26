@@ -29,11 +29,11 @@ cur.execute('''CREATE TABLE political_party
 		DATA_DA_REGULARIZACAO varchar,
 		MOTIVO_DO_CANCELAMENTO varchar ); ''')
 
-csvfiles = listdir("csv/")
+csvfiles = listdir("data/csv/")
 
 for file in csvfiles:
 	cur.execute('''COPY political_party FROM %s
-		DELIMITER ';' CSV HEADER ENCODING 'ISO8859-14'; ''', ['/home/vitor/Code/scapping-tests/partidos-politicos/csv/'+file])
+		DELIMITER ';' CSV HEADER ENCODING 'ISO8859-14'; ''', ['/home/vitor/Code/scapping-tests/partidos-politicos/data/csv/'+file])
 
 cur.execute('''
 	ALTER TABLE political_party
