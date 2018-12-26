@@ -5,8 +5,9 @@ from secrets import psw
 conn = psycopg2.connect("dbname='scrappingtests' user='vitor' host='localhost' password=%s"%(psw))
 cur = conn.cursor()
 
-cur.execute('''DROP TABLE  political_party''')
 
+# Create table political_party
+cur.execute('''DROP TABLE political_party''')
 cur.execute('''CREATE TABLE political_party
       (DATA_DA_EXTRACAO varchar,
  		HORA_DA_EXTRACAO varchar,
@@ -27,7 +28,6 @@ cur.execute('''CREATE TABLE political_party
 		DATA_DO_CANCELAMENTO varchar,
 		DATA_DA_REGULARIZACAO varchar,
 		MOTIVO_DO_CANCELAMENTO varchar ); ''')
-
 
 csvfiles = listdir("csv/")
 
