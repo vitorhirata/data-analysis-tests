@@ -1,19 +1,38 @@
 import psycopg2
 from secrets import psw
 
-conn = psycopg2.connect("dbname='scrappingtests' user='vitor' host='localhost' password=%s"%(psw))
-cur = conn.cursor()
+PARTY_LIST = ['PPL', 'PMB', 'PSD', 'REDE', 'PODE', 'PSOL', 'PSDC', 'PSDB', 'PROS', 'PHS', 'PRP', 'PSL', 'MDB', 'AVANTE', 'NOVO', 'PC DO B', 'PTN', 'PSB', 'PCO', 'PP', 'PSC', 'DC', 'PMDB', 'PATRI', 'PR', 'PRB', 'PT', 'PDT', 'PTC', 'SD', 'PMN', 'PRTB', 'PV', 'PTB', 'PSTU', 'PCB', 'DEM', 'PT DO B', 'PPS']
 
-party_list = ['PPL', 'PMB', 'PSD', 'REDE', 'PODE', 'PSOL', 'PSDC', 'PSDB', 'PROS', 'PHS', 'PRP', 'PSL', 'MDB', 'AVANTE', 'NOVO', 'PC DO B', 'PTN', 'PSB', 'PCO', 'PP', 'PSC', 'DC', 'PMDB', 'PATRI', 'PR', 'PRB', 'PT', 'PDT', 'PTC', 'SD', 'PMN', 'PRTB', 'PV', 'PTB', 'PSTU', 'PCB', 'DEM', 'PT DO B', 'PPS']
-numero_filiados = []
+def compute_number_affiliates():
+    conn = psycopg2.connect(" dbname='scrappingtests' user='vitor' host='localhost' password=%s"%(psw))
+    cur = conn.cursor()
+    number_affiliates = dict.fromkeys(PARTY_LIST)
+    for party in PARTY_LIST:
+        cur.execute('''
+                SELECT COUNT(numero_da_inscricao)
+                FROM political_party
+                WHERE sigla_do_partido = %s; ''', [party])
+        number_affiliates[party] = cur.fetchone()[0]
+    conn.close()
+    return number_affiliates
 
-for party in party_list:
-    cur.execute('''
-        SELECT COUNT(numero_da_inscricao) AS NumPeople
-        FROM political_party
-        WHERE sigla_do_partido = %s; ''', [party])
-    numero_filiados.append(cur.fetchone()[0])
-
-
-conn.commit()
-conn.close()
+def compute_gender_count():
+    conn = psycopg2.connect(" dbname='scrappingtests' user='vitor' host='localhost' password=%s"%(psw))
+    cur = conn.cursor()
+    gender_count = dict.fromkeys(PARTY_LIST)
+    gender_classifications = ['F', 'M']
+    for party in PARTY_LIST:
+        print("Party", party, end=': ')
+        temp=[]
+        for gender in gender_classifications:
+            cur.execute('''
+                SELECT COUNT(political_party.primeiro_nome)
+                FROM political_party
+                INNER JOIN name_gender
+                ON political_party.primeiro_nome = name_gender.first_name
+                WHERE name_gender.classification=%s AND political_party.sigla_do_partido = %s; ''', [gender,party])
+            temp.append(cur.fetchone()[0])
+        gender_count[party] = temp
+        print("Mulheres =", temp[0], ", Homens =", temp[1])
+    conn.close()
+    return gender_count
