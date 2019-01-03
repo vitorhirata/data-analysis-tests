@@ -2,4 +2,6 @@
 
 ## Informações sobre o projeto
 Os dados sobre os filiados a partidos politicos foram retirados de http://dados.gov.br/dataset/filiados-partidos-politicos
+Os dados de gêneros vêm do IBGE e foram utilizados pelo dataset: https://brasil.io/dataset/genero-nomes/nomes
+
 

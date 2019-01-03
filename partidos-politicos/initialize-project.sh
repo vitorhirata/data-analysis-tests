@@ -29,7 +29,6 @@ for st in "${states[@]}"; do
    done
 done
 
-
 # Extract csv's from zip
 files=($(ls data/zip/))
 extractbase="aplic/sead/lista_filiados/uf/"
@@ -38,3 +37,7 @@ for file in "${files[@]}"; do
   extract=${extractbase}${file/zip/csv}
   unzip -j data/zip/${file} ${extract} -d "data/csv/"
 done
+
+
+# Dowload the gender names data
+wget https://brasil.io/dataset/genero-nomes/nomes?format=csv -O data/names_gender.csv
