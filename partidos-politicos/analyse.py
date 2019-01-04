@@ -11,7 +11,8 @@ def compute_number_affiliates():
         cur.execute('''
                 SELECT COUNT(numero_da_inscricao)
                 FROM political_party
-                WHERE sigla_do_partido = %s; ''', [party])
+                WHERE sigla_do_partido = %s
+                AND situacao_do_registro='REGULAR'; ''', [party])
         number_affiliates[party] = cur.fetchone()[0]
     conn.close()
     return number_affiliates
@@ -30,7 +31,9 @@ def compute_gender_count():
                 FROM political_party
                 INNER JOIN name_gender
                 ON political_party.primeiro_nome = name_gender.first_name
-                WHERE name_gender.classification=%s AND political_party.sigla_do_partido = %s; ''', [gender,party])
+                WHERE name_gender.classification= %s
+                AND political_party.sigla_do_partido = %s
+                AND political_party.situacao_do_registro='REGULAR'; ''', [gender,party])
             temp.append(cur.fetchone()[0])
         gender_count[party] = temp
         print("Mulheres =", temp[0], ", Homens =", temp[1])
