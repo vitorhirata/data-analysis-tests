@@ -1,10 +1,10 @@
 import psycopg2
-from secrets import psw
+import secrets
 
 PARTY_LIST = ['PPL', 'PMB', 'PSD', 'REDE', 'PODE', 'PSOL', 'PSDC', 'PSDB', 'PROS', 'PHS', 'PRP', 'PSL', 'MDB', 'AVANTE', 'NOVO', 'PC DO B', 'PTN', 'PSB', 'PCO', 'PP', 'PSC', 'DC', 'PMDB', 'PATRI', 'PR', 'PRB', 'PT', 'PDT', 'PTC', 'SD', 'PMN', 'PRTB', 'PV', 'PTB', 'PSTU', 'PCB', 'DEM', 'PT DO B', 'PPS']
 
 def compute_number_affiliates():
-    conn = psycopg2.connect(" dbname='scrappingtests' user='vitor' host='localhost' password=%s"%(psw))
+    conn = psycopg2.connect("dbname='scrappingtests' user=%s host='localhost' password=%s"%(secrets.user, secrets.psw))
     cur = conn.cursor()
     number_affiliates = dict.fromkeys(PARTY_LIST)
     for party in PARTY_LIST:
@@ -18,7 +18,7 @@ def compute_number_affiliates():
     return number_affiliates
 
 def compute_gender_count():
-    conn = psycopg2.connect(" dbname='scrappingtests' user='vitor' host='localhost' password=%s"%(psw))
+    conn = psycopg2.connect("dbname='scrappingtests' user=%s host='localhost' password=%s"%(secrets.user, secrets.psw))
     cur = conn.cursor()
     gender_count = dict.fromkeys(PARTY_LIST)
     gender_classifications = ['F', 'M']

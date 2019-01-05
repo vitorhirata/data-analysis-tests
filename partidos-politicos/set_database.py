@@ -1,12 +1,12 @@
 import psycopg2
+import secrets
 from os import listdir
-from secrets import psw
 
 def create_political_party():
 
     print("Creating table political_party")
 
-    conn = psycopg2.connect("dbname='scrappingtests' user='vitor' host='localhost' password=%s"%(psw))
+    conn = psycopg2.connect("dbname='scrappingtests' user=%s host='localhost' password=%s"%(secrets.user, secrets.psw))
     cur = conn.cursor()
 
     # If the table already exist drop it
@@ -66,7 +66,7 @@ def create_name_gender():
     print("Creating table name_gender")
     # Create table name_gender
 
-    conn = psycopg2.connect("dbname='scrappingtests' user='vitor' host='localhost' password=%s"%(psw))
+    conn = psycopg2.connect("dbname='scrappingtests' user=%s host='localhost' password=%s"%(secrets.user, secrets.psw))
     cur = conn.cursor()
 
 
