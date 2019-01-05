@@ -31,6 +31,7 @@ def figure1(dict_number_affiliates):
         spine.set_visible(False)
 
     plt.savefig('img/Figure_1.svg', dpi=1000)
+    plt.close(plt.figure())
     return
 
 
@@ -65,6 +66,7 @@ def figure2(dict_number_affiliates, dict_gender):
         spine.set_visible(False)
 
     plt.savefig('img/Figure_2.svg', dpi=1000)
+    plt.close(plt.figure())
     return
 
 def figure3(dict_gender):
@@ -97,6 +99,7 @@ def figure3(dict_gender):
         spine.set_visible(False)
 
     plt.savefig('img/Figure_3.svg', dpi=1000)
+    plt.close(plt.figure())
     return
 
 
@@ -137,6 +140,7 @@ def figure4(dict_number_affiliates, dict_gender):
         spine.set_visible(False)
 
     plt.savefig('img/Figure_4.svg', dpi=1000)
+    plt.close(plt.figure())
     return
 
 
@@ -172,6 +176,7 @@ def figure5(dict_gender):
         spine.set_visible(False)
 
     plt.savefig('img/Figure_5.svg', dpi=1000)
+    plt.close(plt.figure())
     return
 
 
@@ -204,6 +209,7 @@ def figure6(dict_gender):
         spine.set_visible(False)
 
     plt.savefig('img/Figure_6.svg', dpi=1000)
+    plt.close(plt.figure())
     return
 
 
@@ -236,5 +242,6 @@ def figure7(dict_gender):
         spine.set_visible(False)
 
     plt.savefig('img/Figure_7.svg', dpi=1000)
+    plt.close(plt.figure())
     return
 
