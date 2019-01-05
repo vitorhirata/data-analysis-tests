@@ -52,8 +52,13 @@ def create_political_party():
         DROP COLUMN secao_eleitoral,
         DROP COLUMN motivo_do_cancelamento;''')
 
+    # If the extension unaccent does not exist create it
+    try:
+        cur.execute('''CREATE EXTENSION unaccent; ''')
+    except:
+        pass
+
     cur.execute('''ALTER TABLE political_party ADD COLUMN primeiro_nome varchar; ''')
-    cur.execute('''CREATE EXTENSION unaccent; ''')
     cur.execute('''UPDATE political_party SET primeiro_nome=unaccent(split_part(nome_do_filiado, ' ', 1)); ''')
     print("Finish political_party creation.")
 
