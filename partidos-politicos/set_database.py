@@ -39,7 +39,7 @@ def create_political_party():
     csvfiles = listdir("data/csv/")
 
     for file_name in csvfiles:
-        file = open('/home/vitor/Code/scrapping-tests/partidos-politicos/data/csv/'+file_name, 'r', encoding = 'ISO8859-14')
+        file = open('data/csv/'+file_name, 'r', encoding = 'ISO8859-14')
         cur.copy_expert('''COPY political_party FROM STDIN DELIMITER ';' CSV HEADER ENCODING 'ISO8859-14'; ''',file)
 
     cur.execute('''
@@ -76,7 +76,7 @@ def create_name_gender():
 
     # If the table already exist drop it
     try:
-        cur.execute('''DROP TABLE name_gender''')
+        cur.execute('''DROP TABLE name_gender; ''')
     except:
         pass
 
@@ -91,7 +91,7 @@ def create_name_gender():
     	ratio FLOAT,
     	alternative_names varchar); ''')
 
-    file = ('/home/vitor/Code/scrapping-tests/partidos-politicos/data/names_gender.csv', 'r')
+    file = open('data/names_gender.csv', 'r')
     cur.execute('''COPY name_gender FROM STDIN DELIMITER ',' CSV HEADER; ''', file)
 
     cur.execute('''
