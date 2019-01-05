@@ -39,7 +39,6 @@ def create_political_party():
     csvfiles = listdir("data/csv/")
 
     for file_name in csvfiles:
-        print('Copying ' + file_name)
         file = open('/home/vitor/Code/scrapping-tests/partidos-politicos/data/csv/'+file_name, 'r', encoding = 'ISO8859-14')
         cur.copy_expert('''COPY political_party FROM STDIN DELIMITER ';' CSV HEADER ENCODING 'ISO8859-14'; ''',file)
 
