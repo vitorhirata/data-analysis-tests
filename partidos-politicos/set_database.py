@@ -92,7 +92,7 @@ def create_name_gender():
     	alternative_names varchar); ''')
 
     file = open('data/names_gender.csv', 'r')
-    cur.execute('''COPY name_gender FROM STDIN DELIMITER ',' CSV HEADER; ''', file)
+    cur.copy_expert('''COPY name_gender FROM STDIN DELIMITER ',' CSV HEADER; ''', file)
 
     cur.execute('''
         ALTER TABLE name_gender
