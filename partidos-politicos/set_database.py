@@ -38,21 +38,19 @@ def create_political_party():
 
     csvfiles = listdir("data/csv/")
 
-    for file in csvfiles:
-        cur.execute('''
-                COPY political_party FROM %s
-                DELIMITER ';' CSV HEADER ENCODING 'ISO8859-14'; ''',
-                ['/home/vitor/Code/scrapping-tests/partidos-politicos/data/csv/'+file])
+    for file_name in csvfiles:
+        print('Copying ' + file_name)
+        file = open('/home/vitor/Code/scrapping-tests/partidos-politicos/data/csv/'+file_name, 'r', encoding = 'ISO8859-14')
+        cur.copy_expert('''COPY political_party FROM STDIN DELIMITER ';' CSV HEADER ENCODING 'ISO8859-14'; ''',file)
 
-        cur.execute('''
-            ALTER TABLE political_party
-            DROP COLUMN data_da_extracao,
-            DROP COLUMN hora_da_extracao,
-            DROP COLUMN codigo_do_municipio,
-            DROP COLUMN zona_eleitoral,
-            DROP COLUMN secao_eleitoral,
-            DROP COLUMN motivo_do_cancelamento;
-            ''')
+    cur.execute('''
+        ALTER TABLE political_party
+        DROP COLUMN data_da_extracao,
+        DROP COLUMN hora_da_extracao,
+        DROP COLUMN codigo_do_municipio,
+        DROP COLUMN zona_eleitoral,
+        DROP COLUMN secao_eleitoral,
+        DROP COLUMN motivo_do_cancelamento;''')
 
     cur.execute('''ALTER TABLE political_party ADD COLUMN primeiro_nome varchar; ''')
     cur.execute('''CREATE EXTENSION unaccent; ''')
@@ -89,8 +87,8 @@ def create_name_gender():
     	ratio FLOAT,
     	alternative_names varchar); ''')
 
-    cur.execute('''COPY name_gender
-            FROM '/home/vitor/Code/scrapping-tests/partidos-politicos/data/names_gender.csv' DELIMITER ',' CSV HEADER; ''')
+    file = ('/home/vitor/Code/scrapping-tests/partidos-politicos/data/names_gender.csv', 'r')
+    cur.execute('''COPY name_gender FROM STDIN DELIMITER ',' CSV HEADER; ''', file)
 
     cur.execute('''
         ALTER TABLE name_gender
