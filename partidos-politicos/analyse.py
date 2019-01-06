@@ -1,7 +1,28 @@
 import psycopg2
 import secrets
+import pandas as pd
 
 PARTY_LIST = ['PPL', 'PMB', 'PSD', 'REDE', 'PODE', 'PSOL', 'PSDC', 'PSDB', 'PROS', 'PHS', 'PRP', 'PSL', 'MDB', 'AVANTE', 'NOVO', 'PC DO B', 'PTN', 'PSB', 'PCO', 'PP', 'PSC', 'DC', 'PMDB', 'PATRI', 'PR', 'PRB', 'PT', 'PDT', 'PTC', 'SD', 'PMN', 'PRTB', 'PV', 'PTB', 'PSTU', 'PCB', 'DEM', 'PT DO B', 'PPS']
+
+def create_data_frame(number_affiliates, gender_count):
+
+    df = pd.DataFrame.from_dict(gender_count, orient='index', columns=['female', 'male'])
+    df['total'] = number_affiliates.values()
+    df['not_class'] = df['total']-df['female']-df['male']
+    return df
+
+def make_proportions_clean(df):
+    df2 = pd.DataFrame()
+    df2['female'] = df['female']/(df['female']+df['male'])
+    df2['male'] = df['male']/(df['female']+df['male'])
+    return df2
+
+def make_proportions(df):
+    df2 = pd.DataFrame()
+    df2['female'] = df['female']/df['total']
+    df2['male'] = df['male']/df['total']
+    df2['not_class'] = df['not_class']/df['total']
+    return df2
 
 def compute_number_affiliates():
     conn = psycopg2.connect("dbname='scrappingtests' user=%s host='localhost' password=%s"%(secrets.user, secrets.psw))
