@@ -5,8 +5,8 @@ import pandas as pd
 PARTY_LIST = ['PPL', 'PMB', 'PSD', 'REDE', 'PODE', 'PSOL', 'PSDC', 'PSDB', 'PROS', 'PHS', 'PRP', 'PSL', 'MDB', 'AVANTE', 'NOVO', 'PC DO B', 'PTN', 'PSB', 'PCO', 'PP', 'PSC', 'DC', 'PMDB', 'PATRI', 'PR', 'PRB', 'PT', 'PDT', 'PTC', 'SD', 'PMN', 'PRTB', 'PV', 'PTB', 'PSTU', 'PCB', 'DEM', 'PT DO B', 'PPS']
 
 def create_data_frame(number_affiliates, gender_count):
-
     df = pd.DataFrame.from_dict(gender_count, orient='index', columns=['female', 'male'])
+    df = df.drop(['PMDB'])
     df['total'] = number_affiliates.values()
     df['not_class'] = df['total']-df['female']-df['male']
     return df
