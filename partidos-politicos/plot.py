@@ -7,18 +7,16 @@ import pandas as pd
 import analyse
 
 def plotAll(df, df2):
-    figure1(df)
-    figure2(df)
-    figure3(df)
-    figure4(df)
-    figure5(df)
-    figure6(df)
-    figure7(df)
-    figure8(df2)
+    plot_num_affiliates(df)
+    plot_gender_abs(df)
+    plot_gender_relative_bar_full(df)
+    plot_gender_relative_bar_cut(df)
+    plot_gender_relative_line(df)
+    plot_gender_map(df2)
     return
 
 
-def figure1(df):
+def plot_num_affiliates(df):
     df2 = df.sort_values('total')
 
     plt.figure(figsize=(10, 15))
@@ -30,65 +28,37 @@ def figure1(df):
     for spine in plt.gca().spines.values():
         spine.set_visible(False)
 
-    plt.savefig('img/Figure_1.svg', dpi=1000)
+    plt.savefig('img/1_num_affiliates.svg', dpi=1000)
     plt.close(plt.figure())
     return
 
-
-def figure2(df):
-    df2 = analyse.make_proportions(df)
-    df2 = df2.sort_values('female')
-
-    n_groups = len(df2)
-    fig, ax = plt.subplots(figsize=(10, 15))
-    index = np.arange(n_groups)
-    bar_width = 0.25
-    opacity = 0.7
-    rects1 = plt.barh(index+bar_width, df2['female'], bar_width, alpha=opacity, color='r', label='Mulheres')
-    rects2 = plt.barh(index, df2['male'], bar_width, alpha=opacity, color='b', label='Homens')
-    rects3 = plt.barh(index-bar_width, df2['not_class'], bar_width, alpha=opacity, color='y', label='Nao Classificados')
-    plt.xlabel('Proporcao')
-    plt.ylabel('Partidos')
-    plt.title('Proporcao de genero em Partidos Politicos')
-    plt.yticks(index, df2.index)
-    plt.legend()
-    plt.tight_layout()
-    for spine in plt.gca().spines.values():
-        spine.set_visible(False)
-
-    plt.savefig('img/Figure_2.svg', dpi=1000)
-    plt.close(plt.figure())
-    return
-
-def figure3(df):
-    df2 = analyse.make_proportions_clean(df)
-    df2 = df2.sort_values('female')
+def plot_gender_abs(df):
+    df2 = df.sort_values('total')
     df2['female'] = - df2['female']
 
     n_groups = len(df2)
     fig, ax = plt.subplots(figsize=(10, 15))
     index = np.arange(n_groups)
     bar_width = 0.35
-    opacity = 0.7
+    opacity = 0.8
     rects1 = plt.barh(index, df2['female'], bar_width, alpha=opacity, color='r', label='Mulheres')
     rects2 = plt.barh(index, df2['male'], bar_width, alpha=opacity, color='b', label='Homens')
     rects3 = plt.axvline(x=0, color='k', linewidth=3.0)
-    plt.xlabel('Proporcao')
+    plt.xlabel('Numero de Filiados')
     plt.ylabel('Partidos')
-    plt.title('Proporcao de genero em Partidos Politicos')
+    plt.title('Numeros absolutos do genero em Partidos Politicos')
     plt.yticks(index, df2.index)
-    plt.xticks([-0.8, -0.6, -0.4, -0.2, 0, 0.2, 0.4, 0.6, 0.8])
     plt.legend()
     plt.tight_layout()
     for spine in plt.gca().spines.values():
         spine.set_visible(False)
 
-    plt.savefig('img/Figure_3.svg', dpi=1000)
+    plt.savefig('img/2_gender_abs.svg', dpi=1000)
     plt.close(plt.figure())
     return
 
 
-def figure4(df):
+def plot_gender_relative_bar_full(df):
     df2 = analyse.make_proportions(df)
     df2 = df2.sort_values('female')
 
@@ -112,12 +82,12 @@ def figure4(df):
     for spine in plt.gca().spines.values():
         spine.set_visible(False)
 
-    plt.savefig('img/Figure_4.svg', dpi=1000)
+    plt.savefig('img/3_gender_relative_bar_full.svg', dpi=1000)
     plt.close(plt.figure())
     return
 
 
-def figure5(df):
+def plot_gender_relative_bar_cut(df):
     df2 = analyse.make_proportions_clean(df)
     df2 = df2.sort_values('female')
 
@@ -140,12 +110,12 @@ def figure5(df):
     for spine in plt.gca().spines.values():
         spine.set_visible(False)
 
-    plt.savefig('img/Figure_5.svg', dpi=1000)
+    plt.savefig('img/4_gender_relative_bar_cut.svg', dpi=1000)
     plt.close(plt.figure())
     return
 
 
-def figure6(df):
+def plot_gender_relative_line(df):
     df2 = analyse.make_proportions_clean(df)
     df2 = df2.sort_values('female')
 
@@ -166,37 +136,11 @@ def figure6(df):
     for spine in plt.gca().spines.values():
         spine.set_visible(False)
 
-    plt.savefig('img/Figure_6.svg', dpi=1000)
+    plt.savefig('img/5_gender_relative_line.svg', dpi=1000)
     plt.close(plt.figure())
     return
 
-
-def figure7(df):
-    df2 = df.sort_values('total')
-    df2['female'] = - df2['female']
-
-    n_groups = len(df2)
-    fig, ax = plt.subplots(figsize=(10, 15))
-    index = np.arange(n_groups)
-    bar_width = 0.35
-    opacity = 0.8
-    rects1 = plt.barh(index, df2['female'], bar_width, alpha=opacity, color='r', label='Mulheres')
-    rects2 = plt.barh(index, df2['male'], bar_width, alpha=opacity, color='b', label='Homens')
-    rects3 = plt.axvline(x=0, color='k', linewidth=3.0)
-    plt.xlabel('Numero de Filiados')
-    plt.ylabel('Partidos')
-    plt.title('Numeros absolutos do genero em Partidos Politicos')
-    plt.yticks(index, df2.index)
-    plt.legend()
-    plt.tight_layout()
-    for spine in plt.gca().spines.values():
-        spine.set_visible(False)
-
-    plt.savefig('img/Figure_7.svg', dpi=1000)
-    plt.close(plt.figure())
-    return
-
-def figure8(df):
+def plot_gender_map(df):
     df = analyse.make_proportions_clean(df)
     gdf = gpd.read_file('data/br-states/estados.shp')
     gdf = gdf.merge(df, left_on='sigla', right_index=True, how='inner')
@@ -206,5 +150,5 @@ def figure8(df):
     for spine in plt.gca().spines.values():
             spine.set_visible(False)
     plt.title('Proporcao de Mulheres por Estado')
-    plt.savefig('img/Figure_8.svg', dpi=1000)
+    plt.savefig('img/6_gender_map.svg', dpi=1000)
     plt.close(plt.figure())
