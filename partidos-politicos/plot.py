@@ -2,9 +2,11 @@ import matplotlib.pyplot as plt; plt.rcdefaults()
 import numpy as np
 import matplotlib.pyplot as plt
 from operator import itemgetter
+import geopandas as gpd
+import pandas as pd
 import analyse
 
-def plotAll(df):
+def plotAll(df, df2):
     figure1(df)
     figure2(df)
     figure3(df)
@@ -12,6 +14,7 @@ def plotAll(df):
     figure5(df)
     figure6(df)
     figure7(df)
+    figure8(df2)
     return
 
 
@@ -193,3 +196,15 @@ def figure7(df):
     plt.close(plt.figure())
     return
 
+def figure8(df):
+    df = analyse.make_proportions_clean(df)
+    gdf = gpd.read_file('data/br-states/estados.shp')
+    gdf = gdf.merge(df, left_on='sigla', right_index=True, how='inner')
+    gdf.plot(column = 'female',cmap = 'OrRd', edgecolor = 'black', legend = True, figsize=(13, 8))
+    plt.xticks([])
+    plt.yticks([])
+    for spine in plt.gca().spines.values():
+            spine.set_visible(False)
+    plt.title('Proporcao de Mulheres por Estado')
+    plt.savefig('img/Figure_8.svg', dpi=1000)
+    plt.close(plt.figure())
