@@ -8,9 +8,9 @@ STATE_LIST = ['AC', 'AL', 'AM', 'AP', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MG', 
 
 def create_df_party(number_affiliates, gender_party):
     df = pd.DataFrame.from_dict(gender_party, orient='index', columns=['female', 'male'])
-    df = df.drop(['PMDB'])
     df['total'] = number_affiliates.values()
     df['not_class'] = df['total']-df['female']-df['male']
+    df = df.drop(['PMDB'])
     return df
 
 def create_df_state(gender_state):
