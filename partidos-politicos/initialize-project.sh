@@ -3,8 +3,11 @@
 # If the file data does not exist create it
 if [ ! -e data ]; then
   mkdir data
-  mkdir data/zip
-  mkdir data/csv
+  mkdir data/affiliates
+  mkdir data/affiliates/zip
+  mkdir data/affiliates/csv
+  mkdir data/candidates
+  mkdir data/candidates/csv
 fi
 
 
@@ -22,7 +25,7 @@ for st in "${states[@]}"; do
   for pol in "${politicalparty[@]}"; do
 	   url=${baseurl}${pol}_${st}.zip
      if `validate_url $url > /dev/null`; then
-       wget $url -P data/zip/
+       wget $url -P data/affiliates/zip/
      else
        echo "${url} inexistent"
      fi
@@ -30,14 +33,21 @@ for st in "${states[@]}"; do
 done
 
 # Extract csv's from zip
-files=($(ls data/zip/))
+files=($(ls data/affiliates/zip/))
 extractbase="aplic/sead/lista_filiados/uf/"
 
 for file in "${files[@]}"; do
   extract=${extractbase}${file/zip/csv}
-  unzip -j data/zip/${file} ${extract} -d "data/csv/"
+  unzip -j data/affiliates/zip/${file} ${extract} -d "data/affiliates/csv/"
 done
 
 
 # Dowload the gender names data
 wget https://brasil.io/dataset/genero-nomes/nomes?format=csv -O data/names_gender.csv
+
+
+
+# Dowload the candidates data
+wget http://agencia.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2018.zip -O data/candidates/candidates.zip
+unzip data/candidates/candidates.zip -d data/candidates/
+mv data/candidates/*.csv data/candidates/csv/
