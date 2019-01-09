@@ -2,7 +2,7 @@ import psycopg2
 import secrets
 import pandas as pd
 
-PARTY_LIST = ['PPL', 'PMB', 'PSD', 'REDE', 'PODE', 'PSOL', 'PSDC', 'PSDB', 'PROS', 'PHS', 'PRP', 'PSL', 'MDB', 'AVANTE', 'NOVO', 'PC DO B', 'PTN', 'PSB', 'PCO', 'PP', 'PSC', 'DC', 'PMDB', 'PATRI', 'PR', 'PRB', 'PT', 'PDT', 'PTC', 'SD', 'PMN', 'PRTB', 'PV', 'PTB', 'PSTU', 'PCB', 'DEM', 'PT DO B', 'PPS']
+PARTY_LIST = ['PPL', 'PMB', 'PSD', 'REDE', 'PODE', 'PSOL', 'PSDB', 'PROS', 'PHS', 'PRP', 'PSL', 'MDB', 'AVANTE', 'NOVO', 'PC DO B', 'PSB', 'PCO', 'PP', 'PSC', 'DC', 'PATRI', 'PR', 'PRB', 'PT', 'PDT', 'PTC', 'SD', 'PMN', 'PRTB', 'PV', 'PTB', 'PSTU', 'PCB', 'DEM', 'PPS']
 STATE_LIST = ['AC', 'AL', 'AM', 'AP', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MG', 'MS', 'MT', 'PA', 'PB', 'PE', 'PI', 'PR', 'RJ', 'RN', 'RO', 'RR', 'RS', 'SC', 'SE', 'SP', 'TO']
 
 
@@ -10,7 +10,6 @@ def create_df_party(number_affiliates, gender_party):
     df = pd.DataFrame.from_dict(gender_party, orient='index', columns=['female', 'male'])
     df['total'] = number_affiliates.values()
     df['not_class'] = df['total']-df['female']-df['male']
-    df = df.drop(['PMDB'])
     return df
 
 def create_df_state(gender_state):
