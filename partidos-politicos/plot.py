@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt; plt.rcdefaults()
 import numpy as np
 import matplotlib.pyplot as plt
 from operator import itemgetter
@@ -31,7 +30,7 @@ def plot_num_affiliates(df):
     for spine in plt.gca().spines.values():
         spine.set_visible(False)
 
-    plt.savefig('img/1_num_affiliates.svg', dpi=1000)
+    plt.savefig('test_figure/1_num_affiliates.svg', dpi=1000)
     plt.close(plt.figure())
     return
 
@@ -56,7 +55,7 @@ def plot_gender_abs(df):
     for spine in plt.gca().spines.values():
         spine.set_visible(False)
 
-    plt.savefig('img/2_gender_abs.svg', dpi=1000)
+    plt.savefig('test_figure/2_gender_abs.svg', dpi=1000)
     plt.close(plt.figure())
     return
 
@@ -85,7 +84,7 @@ def plot_gender_relative_bar_full(df):
     for spine in plt.gca().spines.values():
         spine.set_visible(False)
 
-    plt.savefig('img/3_gender_relative_bar_full.svg', dpi=1000)
+    plt.savefig('test_figure/3_gender_relative_bar_full.svg', dpi=1000)
     plt.close(plt.figure())
     return
 
@@ -113,7 +112,7 @@ def plot_gender_relative_bar_cut(df):
     for spine in plt.gca().spines.values():
         spine.set_visible(False)
 
-    plt.savefig('img/4_gender_relative_bar_cut.svg', dpi=1000)
+    plt.savefig('test_figure/4_gender_relative_bar_cut.svg', dpi=1000)
     plt.close(plt.figure())
     return
 
@@ -139,7 +138,7 @@ def plot_gender_relative_line(df):
     for spine in plt.gca().spines.values():
         spine.set_visible(False)
 
-    plt.savefig('img/5_gender_relative_line.svg', dpi=1000)
+    plt.savefig('test_figure/5_gender_relative_line.svg', dpi=1000)
     plt.close(plt.figure())
     return
 
@@ -147,20 +146,16 @@ def plot_gender_map(df):
     df = analyse.make_proportions_clean(df)
     gdf = gpd.read_file('data/br-states/estados.shp')
     gdf = gdf.merge(df, left_on='sigla', right_index=True, how='inner')
-    vmin, vmax = 0.3, 0.5
+    vmin, vmax = 0.27, 0.57
 
-    ax = gdf.plot(column = 'female',cmap = 'gist_ncar', edgecolor = 'black', vmin=vmin, vmax=vmax, figsize=(13, 8))
-    fig = ax.get_figure()
-    cax = fig.add_axes([0.9, 0.1, 0.03, 0.8])
-    sm = plt.cm.ScalarMappable(cmap='gist_ncar', norm=plt.Normalize(vmin=vmin, vmax=vmax))
-    sm._A = []
-    fig.colorbar(sm, cax=cax)
+    gdf.plot(column='female', cmap = 'gist_rainbow', legend=True, edgecolor = 'black', vmin=vmin, vmax=vmax, figsize=(15, 9))
     plt.xticks([])
     plt.yticks([])
     for spine in plt.gca().spines.values():
-            spine.set_visible(False)
-    plt.title('Proporcao de Mulheres Filiadas por Estado')
-    plt.savefig('img/6_gender_map.svg', dpi=1000)
+        spine.set_visible(False)
+    plt.title('Proporcao de Mulheres Filiadas por Estado', fontsize=20)
+    plt.tight_layout()
+    plt.savefig('test_figure/6_gender_map.svg', dpi=1000)
     plt.close(plt.figure())
     return
 
@@ -187,7 +182,7 @@ def plot_candidates_gender_relative_bar_cut(df):
     for spine in plt.gca().spines.values():
         spine.set_visible(False)
 
-    plt.savefig('img/7_candidates_gender_relative_bar_cut.svg', dpi=1000)
+    plt.savefig('test_figure/7_candidates_gender_relative_bar_cut.svg', dpi=1000)
     plt.close(plt.figure())
     return
 
@@ -213,7 +208,7 @@ def plot_candidates_gender_relative_line(df):
     for spine in plt.gca().spines.values():
         spine.set_visible(False)
 
-    plt.savefig('img/8_candidates_relative_line.svg', dpi=1000)
+    plt.savefig('test_figure/8_candidates_relative_line.svg', dpi=1000)
     plt.close(plt.figure())
     return
 
@@ -222,19 +217,15 @@ def plot_candidates_gender_map(df):
     df = analyse.make_proportions_clean(df)
     gdf = gpd.read_file('data/br-states/estados.shp')
     gdf = gdf.merge(df, left_on='sigla', right_index=True, how='inner')
-    vmin, vmax = 0.3, 0.5
+    vmin, vmax = 0.27, 0.57
 
-    ax = gdf.plot(column = 'female',cmap = 'gist_ncar', edgecolor = 'black', vmin=vmin, vmax=vmax, figsize=(13, 8))
-    fig = ax.get_figure()
-    cax = fig.add_axes([0.9, 0.1, 0.03, 0.8])
-    sm = plt.cm.ScalarMappable(cmap='gist_ncar', norm=plt.Normalize(vmin=vmin, vmax=vmax))
-    sm._A = []
-    fig.colorbar(sm, cax=cax)
+    gdf.plot(column='female', cmap = 'gist_rainbow', legend=True, edgecolor = 'black', vmin=vmin, vmax=vmax, figsize=(15, 9))
     plt.xticks([])
     plt.yticks([])
     for spine in plt.gca().spines.values():
-            spine.set_visible(False)
-    plt.title('Proporcao de Mulheres Candidatas por Estado')
-    plt.savefig('img/9_candidates_gender_map.svg', dpi=1000)
+        spine.set_visible(False)
+    plt.title('Proporcao de Mulheres Candidatas por Estado', fontsize=20)
+    plt.tight_layout()
+    plt.savefig('test_figure/9_candidates_gender_map.svg', dpi=1000)
     plt.close(plt.figure())
     return
