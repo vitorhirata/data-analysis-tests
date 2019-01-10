@@ -101,7 +101,7 @@ def compute_candidates_gender():
         temp=[]
         for gender in gender_classifications:
             cur.execute('''
-                SELECT COUNT(nm_candidato)
+                SELECT COUNT (DISTINCT nm_candidato)
                 FROM candidates
                 WHERE ds_genero = %s
                 AND sg_partido = %s
@@ -124,7 +124,7 @@ def compute_candidates_gender_state():
         temp=[]
         for gender in gender_classifications:
             cur.execute('''
-                SELECT COUNT(nm_candidato)
+                SELECT COUNT (DISTINCT nm_candidato)
                 FROM candidates
                 WHERE ds_genero = %s
                 AND sg_uf= %s
@@ -147,13 +147,12 @@ def compute_elected_gender_party():
         temp=[]
         for gender in gender_classifications:
             cur.execute('''
-                SELECT COUNT(candidates_elected.nome_do_candidato)
-                FROM candidates_elected
-                INNER JOIN candidates
-                ON candidates_elected.nome_do_candidato = candidates.nm_candidato
-                WHERE candidates.ds_genero = %s
-                AND candidates.sg_partido = %s
-                AND candidates.ds_situacao_candidatura = 'APTO'; ''', [gender,party])
+                SELECT COUNT (DISTINCT nm_candidato)
+                FROM candidates
+                WHERE ds_genero = %s
+                AND sg_partido = %s
+                AND ds_situacao_candidatura = 'APTO'
+                AND cd_sit_tot_turno::INTEGER BETWEEN 1 AND 3; ''', [gender,party])
             temp.append(cur.fetchone()[0])
         elected_gender_party[party] = temp
         print("Mulheres =", temp[0], ", Homens =", temp[1])
@@ -161,3 +160,25 @@ def compute_elected_gender_party():
     elected_gender_party['PC DO B'] = elected_gender_party.pop('PC do B')
     conn.close()
     return elected_gender_party
+
+def compute_elected_gender_state():
+    conn = psycopg2.connect("dbname='scrappingtests' user=%s host='localhost' password=%s"%(secrets.user, secrets.psw))
+    cur = conn.cursor()
+    elected_gender = dict.fromkeys(STATE_LIST)
+    gender_classifications = ['FEMININO', 'MASCULINO']
+    for state in STATE_LIST:
+        print("State", state, end=': ')
+        temp=[]
+        for gender in gender_classifications:
+            cur.execute('''
+                SELECT COUNT (DISTINCT nm_candidato)
+                FROM candidates
+                WHERE ds_genero = %s
+                AND sg_uf= %s
+                AND ds_situacao_candidatura = 'APTO'
+                AND cd_sit_tot_turno::INTEGER BETWEEN 1 AND 3; ''', [gender,state])
+            temp.append(cur.fetchone()[0])
+        elected_gender[state] = temp
+        print("Mulheres =", temp[0], ", Homens =", temp[1])
+    conn.close()
+    return elected_gender
