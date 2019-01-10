@@ -90,11 +90,13 @@ def compute_gender_state():
     return gender_state
 
 def compute_candidates_gender():
+    party_list = ['PPL', 'PMB', 'PSD', 'REDE', 'PODE', 'PSOL', 'SOLIDARIEDADE', 'PSDB', 'PROS', 'PHS', 'PRP', 'PSL', 'MDB', 'AVANTE', 'NOVO', 'PC do B', 'PSB', 'PCO', 'PP', 'PSC', 'DC', 'PATRI', 'PR', 'PRB', 'PT', 'PDT', 'PTC', 'PMN', 'PRTB', 'PV', 'PTB', 'PSTU', 'PCB', 'PPS', 'DEM']
+
     conn = psycopg2.connect("dbname='scrappingtests' user=%s host='localhost' password=%s"%(secrets.user, secrets.psw))
     cur = conn.cursor()
-    candidates_gender = dict.fromkeys(PARTY_LIST)
+    candidates_gender = dict.fromkeys(party_list)
     gender_classifications = ['FEMININO', 'MASCULINO']
-    for party in PARTY_LIST:
+    for party in party_list:
         print("Party", party, end=': ')
         temp=[]
         for gender in gender_classifications:
@@ -134,11 +136,13 @@ def compute_candidates_gender_state():
     return candidates_gender
 
 def compute_elected_gender_party():
+    party_list = ['PPL', 'PMB', 'PSD', 'REDE', 'PODE', 'PSOL', 'SOLIDARIEDADE', 'PSDB', 'PROS', 'PHS', 'PRP', 'PSL', 'MDB', 'AVANTE', 'NOVO', 'PC do B', 'PSB', 'PCO', 'PP', 'PSC', 'DC', 'PATRI', 'PR', 'PRB', 'PT', 'PDT', 'PTC', 'PMN', 'PRTB', 'PV', 'PTB', 'PSTU', 'PCB', 'PPS', 'DEM']
+
     conn = psycopg2.connect("dbname='scrappingtests' user=%s host='localhost' password=%s"%(secrets.user, secrets.psw))
     cur = conn.cursor()
-    gender_party = dict.fromkeys(PARTY_LIST)
+    elected_gender_party = dict.fromkeys(party_list)
     gender_classifications = ['FEMININO', 'MASCULINO']
-    for party in PARTY_LIST:
+    for party in party_list:
         print("Party", party, end=': ')
         temp=[]
         for gender in gender_classifications:
@@ -151,7 +155,9 @@ def compute_elected_gender_party():
                 AND candidates.sg_partido = %s
                 AND candidates.ds_situacao_candidatura = 'APTO'; ''', [gender,party])
             temp.append(cur.fetchone()[0])
-        gender_party[party] = temp
+        elected_gender_party[party] = temp
         print("Mulheres =", temp[0], ", Homens =", temp[1])
+    elected_gender_party['SD'] = elected_gender_party.pop('SOLIDARIEDADE')
+    elected_gender_party['PC DO B'] = elected_gender_party.pop('PC do B')
     conn.close()
-    return gender_party
+    return elected_gender_party
