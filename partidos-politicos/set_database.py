@@ -182,16 +182,13 @@ def create_candidates():
         NR_PROTOCOLO_CANDIDATURA varchar,
         NR_PROCESSO varchar); ''')
 
-    csvfiles = listdir("data/candidates/csv/")
-    for file_name in csvfiles:
-        file = open('data/candidates/csv/'+file_name, 'r', encoding = 'ISO8859-14')
-        cur.copy_expert('''COPY candidates FROM STDIN DELIMITER ';' CSV HEADER ENCODING 'ISO8859-14'; ''',file)
+    file = open('data/candidates/consulta_cand_2018_BRASIL.csv', 'r', encoding = 'ISO8859-14')
+    cur.copy_expert('''COPY candidates FROM STDIN DELIMITER ';' CSV HEADER ENCODING 'ISO8859-14'; ''',file)
 
     cur.execute('''
         ALTER TABLE candidates
         DROP COLUMN CD_TIPO_ELEICAO,
         DROP COLUMN NM_TIPO_ELEICAO,
-        DROP COLUMN NR_TURNO,
         DROP COLUMN CD_ELEICAO,
         DROP COLUMN DS_ELEICAO,
         DROP COLUMN DT_ELEICAO,
@@ -225,8 +222,6 @@ def create_candidates():
         DROP COLUMN CD_OCUPACAO,
         DROP COLUMN DS_OCUPACAO,
         DROP COLUMN NR_DESPESA_MAX_CAMPANHA,
-        DROP COLUMN CD_SIT_TOT_TURNO,
-        DROP COLUMN DS_SIT_TOT_TURNO,
         DROP COLUMN ST_DECLARAR_BENS,
         DROP COLUMN NR_PROTOCOLO_CANDIDATURA,
         DROP COLUMN NR_PROCESSO; ''')

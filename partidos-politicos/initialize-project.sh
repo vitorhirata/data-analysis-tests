@@ -7,7 +7,6 @@ if [ ! -e data ]; then
   mkdir data/affiliates/zip
   mkdir data/affiliates/csv
   mkdir data/candidates
-  mkdir data/candidates/csv
   mkdir test_figure
 fi
 
@@ -50,5 +49,4 @@ wget https://brasil.io/dataset/genero-nomes/nomes?format=csv -O data/names_gende
 
 # Dowload the candidates data
 wget http://agencia.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2018.zip -O data/candidates/candidates.zip
-unzip data/candidates/candidates.zip -d data/candidates/
-mv data/candidates/*.csv data/candidates/csv/
+unzip -j data/candidates/candidates.zip consulta_cand_2018_BRASIL.csv leiame.pdf -d "data/candidates"
