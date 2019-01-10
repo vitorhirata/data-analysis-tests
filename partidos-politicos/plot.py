@@ -237,6 +237,7 @@ def plot_candidates_gender_map(df):
 def plot_elected_gender_relative_bar_cut(df):
     df2 = analyse.make_proportions_clean(df)
     df2 = df2.sort_values('female')
+    df2.dropna(subset=['female'], inplace=True)
 
     n_groups = len(df2)
     fig, ax = plt.subplots(figsize=(10, 15))
@@ -265,6 +266,7 @@ def plot_elected_gender_relative_bar_cut(df):
 def plot_elected_gender_relative_line(df):
     df2 = analyse.make_proportions_clean(df)
     df2 = df2.sort_values('female')
+    df2.dropna(subset=['female'], inplace=True)
 
     n_groups = len(df2)
     fig, ax = plt.subplots(figsize=(10, 15))
