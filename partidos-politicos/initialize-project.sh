@@ -8,6 +8,7 @@ if [ ! -e data ]; then
   mkdir data/affiliates/csv
   mkdir data/candidates
   mkdir data/candidates/csv
+  mkdir test_figure
 fi
 
 
