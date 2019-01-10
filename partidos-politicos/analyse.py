@@ -132,3 +132,26 @@ def compute_candidates_gender_state():
         print("Mulheres =", temp[0], ", Homens =", temp[1])
     conn.close()
     return candidates_gender
+
+def compute_elected_gender_party():
+    conn = psycopg2.connect("dbname='scrappingtests' user=%s host='localhost' password=%s"%(secrets.user, secrets.psw))
+    cur = conn.cursor()
+    gender_party = dict.fromkeys(PARTY_LIST)
+    gender_classifications = ['FEMININO', 'MASCULINO']
+    for party in PARTY_LIST:
+        print("Party", party, end=': ')
+        temp=[]
+        for gender in gender_classifications:
+            cur.execute('''
+                SELECT COUNT(candidates_elected.nome_do_candidato)
+                FROM candidates_elected
+                INNER JOIN candidates
+                ON candidates_elected.nome_do_candidato = candidates.nm_candidato
+                WHERE candidates.ds_genero = %s
+                AND candidates.sg_partido = %s
+                AND candidates.ds_situacao_candidatura = 'APTO'; ''', [gender,party])
+            temp.append(cur.fetchone()[0])
+        gender_party[party] = temp
+        print("Mulheres =", temp[0], ", Homens =", temp[1])
+    conn.close()
+    return gender_party
