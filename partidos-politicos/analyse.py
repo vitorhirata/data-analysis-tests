@@ -90,12 +90,11 @@ def compute_gender_state():
     return gender_state
 
 def compute_candidates_gender():
-    party_list = ['PPL', 'PMB', 'PSD', 'REDE', 'PODE', 'PSOL', 'SOLIDARIEDADE', 'PSDB', 'PROS', 'PHS', 'PRP', 'PSL', 'MDB', 'AVANTE', 'NOVO', 'PC do B', 'PSB', 'PCO', 'PP', 'PSC', 'DC', 'PATRI', 'PR', 'PRB', 'PT', 'PDT', 'PTC', 'PMN', 'PRTB', 'PV', 'PTB', 'PSTU', 'PCB', 'PPS', 'DEM']
     conn = psycopg2.connect("dbname='scrappingtests' user=%s host='localhost' password=%s"%(secrets.user, secrets.psw))
     cur = conn.cursor()
-    candidates_gender = dict.fromkeys(party_list)
+    candidates_gender = dict.fromkeys(PARTY_LIST)
     gender_classifications = ['FEMININO', 'MASCULINO']
-    for party in party_list:
+    for party in PARTY_LIST:
         print("Party", party, end=': ')
         temp=[]
         for gender in gender_classifications:
@@ -110,5 +109,26 @@ def compute_candidates_gender():
         print("Mulheres =", temp[0], ", Homens =", temp[1])
     candidates_gender['SD'] = candidates_gender.pop('SOLIDARIEDADE')
     candidates_gender['PC DO B'] = candidates_gender.pop('PC do B')
+    conn.close()
+    return candidates_gender
+
+def compute_candidates_gender_state():
+    conn = psycopg2.connect("dbname='scrappingtests' user=%s host='localhost' password=%s"%(secrets.user, secrets.psw))
+    cur = conn.cursor()
+    candidates_gender = dict.fromkeys(STATE_LIST)
+    gender_classifications = ['FEMININO', 'MASCULINO']
+    for state in STATE_LIST:
+        print("State", state, end=': ')
+        temp=[]
+        for gender in gender_classifications:
+            cur.execute('''
+                SELECT COUNT(nm_candidato)
+                FROM candidates
+                WHERE ds_genero = %s
+                AND sg_uf= %s
+                AND ds_situacao_candidatura = 'APTO'; ''', [gender,state])
+            temp.append(cur.fetchone()[0])
+        candidates_gender[state] = temp
+        print("Mulheres =", temp[0], ", Homens =", temp[1])
     conn.close()
     return candidates_gender

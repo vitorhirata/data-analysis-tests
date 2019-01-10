@@ -6,7 +6,7 @@ import geopandas as gpd
 import pandas as pd
 import analyse
 
-def plotAll(df, df2, df3):
+def plotAll(df, df2, df3, df4):
     plot_num_affiliates(df)
     plot_gender_abs(df)
     plot_gender_relative_bar_full(df)
@@ -15,6 +15,7 @@ def plotAll(df, df2, df3):
     plot_gender_map(df2)
     plot_candidates_gender_relative_bar_cut(df3)
     plot_candidates_gender_relative_line(df3)
+    plot_candidates_gender_map(df4)
     return
 
 
@@ -146,14 +147,22 @@ def plot_gender_map(df):
     df = analyse.make_proportions_clean(df)
     gdf = gpd.read_file('data/br-states/estados.shp')
     gdf = gdf.merge(df, left_on='sigla', right_index=True, how='inner')
-    gdf.plot(column = 'female',cmap = 'OrRd', edgecolor = 'black', legend = True, figsize=(13, 8))
+    vmin, vmax = 0.3, 0.5
+
+    ax = gdf.plot(column = 'female',cmap = 'gist_ncar', edgecolor = 'black', vmin=vmin, vmax=vmax, figsize=(13, 8))
+    fig = ax.get_figure()
+    cax = fig.add_axes([0.9, 0.1, 0.03, 0.8])
+    sm = plt.cm.ScalarMappable(cmap='gist_ncar', norm=plt.Normalize(vmin=vmin, vmax=vmax))
+    sm._A = []
+    fig.colorbar(sm, cax=cax)
     plt.xticks([])
     plt.yticks([])
     for spine in plt.gca().spines.values():
             spine.set_visible(False)
-    plt.title('Proporcao de Mulheres por Estado')
+    plt.title('Proporcao de Mulheres Filiadas por Estado')
     plt.savefig('img/6_gender_map.svg', dpi=1000)
     plt.close(plt.figure())
+    return
 
 def plot_candidates_gender_relative_bar_cut(df):
     df2 = analyse.make_proportions_clean(df)
@@ -205,5 +214,27 @@ def plot_candidates_gender_relative_line(df):
         spine.set_visible(False)
 
     plt.savefig('img/8_candidates_relative_line.svg', dpi=1000)
+    plt.close(plt.figure())
+    return
+
+
+def plot_candidates_gender_map(df):
+    df = analyse.make_proportions_clean(df)
+    gdf = gpd.read_file('data/br-states/estados.shp')
+    gdf = gdf.merge(df, left_on='sigla', right_index=True, how='inner')
+    vmin, vmax = 0.3, 0.5
+
+    ax = gdf.plot(column = 'female',cmap = 'gist_ncar', edgecolor = 'black', vmin=vmin, vmax=vmax, figsize=(13, 8))
+    fig = ax.get_figure()
+    cax = fig.add_axes([0.9, 0.1, 0.03, 0.8])
+    sm = plt.cm.ScalarMappable(cmap='gist_ncar', norm=plt.Normalize(vmin=vmin, vmax=vmax))
+    sm._A = []
+    fig.colorbar(sm, cax=cax)
+    plt.xticks([])
+    plt.yticks([])
+    for spine in plt.gca().spines.values():
+            spine.set_visible(False)
+    plt.title('Proporcao de Mulheres Candidatas por Estado')
+    plt.savefig('img/9_candidates_gender_map.svg', dpi=1000)
     plt.close(plt.figure())
     return
