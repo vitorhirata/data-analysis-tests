@@ -151,9 +151,9 @@ def plot_gender_map(df, str1, str2):
     df = analyse.make_proportions_clean(df)
     gdf = gpd.read_file('data/br-states/estados.shp')
     gdf = gdf.merge(df, left_on='sigla', right_index=True, how='inner')
-    vmin, vmax = 0.0, 0.6
+    vmin, vmax = 0.05, 0.55
 
-    gdf.plot(column='female', cmap = 'gist_rainbow', legend=True, edgecolor = 'black', vmin=vmin, vmax=vmax, figsize=(15, 9))
+    gdf.plot(column='female', cmap = 'gnuplot2', legend=True, edgecolor = 'black', vmin=vmin, vmax=vmax, figsize=(15, 9))
     plt.xticks([])
     plt.yticks([])
     for spine in plt.gca().spines.values():
