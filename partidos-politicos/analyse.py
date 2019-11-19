@@ -7,26 +7,26 @@ STATE_LIST = ['AC', 'AL', 'AM', 'AP', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MG', 
 
 
 def create_df_party(number_affiliates, gender_party):
-    df = pd.DataFrame.from_dict(gender_party, orient='index', columns=['female', 'male'])
-    df['total'] = number_affiliates.values()
-    df['not_class'] = df['total']-df['female']-df['male']
+    df = pd.DataFrame.from_dict(gender_party, orient='index', columns=['Female', 'Male'])
+    df['Total'] = number_affiliates.values()
+    df['Not_classified'] = df['Total']-df['Female']-df['Male']
     return df
 
 def create_df_state(gender_state):
-    df = pd.DataFrame.from_dict(gender_state, orient='index', columns=['female', 'male'])
+    df = pd.DataFrame.from_dict(gender_state, orient='index', columns=['Female', 'Male'])
     return df
 
 def make_proportions_clean(df):
     df2 = pd.DataFrame()
-    df2['female'] = df['female']/(df['female']+df['male'])
-    df2['male'] = df['male']/(df['female']+df['male'])
+    df2['Female'] = df['Female']/(df['Female']+df['Male'])
+    df2['Male'] = df['Male']/(df['Female']+df['Male'])
     return df2
 
 def make_proportions(df):
     df2 = pd.DataFrame()
-    df2['female'] = df['female']/df['total']
-    df2['male'] = df['male']/df['total']
-    df2['not_class'] = df['not_class']/df['total']
+    df2['Female'] = df['Female']/df['Total']
+    df2['Male'] = df['Male']/df['Total']
+    df2['Not_classified'] = df['Not_classified']/df['Total']
     return df2
 
 def compute_number_affiliates():
